@@ -1,0 +1,51 @@
+package com.security.security_Tesing.Configuration;
+
+
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+@org.springframework.context.annotation.Configuration
+@EnableWebSecurity
+public class Configuration {
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+//        http.csrf(customizable->customizable.disable());
+//        http.authorizeHttpRequests(customizer->customizer.anyRequest().authenticated());
+//        http.formLogin(Customizer.withDefaults());
+//        http.httpBasic(Customizer.withDefaults());
+//        http.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//        return http.build();
+//    }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
+        return http.csrf(customizer->customizer.disable())
+                .authorizeHttpRequests(request->request.anyRequest().authenticated())
+                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .build();
+    }
+    @Bean
+    public UserDetailsService userDetailsService(){
+        UserDetails user1= User.withDefaultPasswordEncoder()
+                .username("Danny")
+                .password("Dan@123")
+                .roles("User")
+                .build();
+        UserDetails user2= User.withDefaultPasswordEncoder()
+                .username("Souhardya")
+                .password("Bengal")
+                .roles("Software Engineer")
+                .build();
+        return new InMemoryUserDetailsManager(user1,user2);
+    }
+}
