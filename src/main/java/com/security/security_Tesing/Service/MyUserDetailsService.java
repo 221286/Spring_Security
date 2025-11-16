@@ -1,5 +1,6 @@
 package com.security.security_Tesing.Service;
 
+import com.security.security_Tesing.Model.UserPrincipal;
 import com.security.security_Tesing.Model.Users;
 import com.security.security_Tesing.Repo.MyUsers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,11 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Users> userCheck=myUsers.findByUsername(username);
         Users user=userCheck.orElseThrow(()->new UsernameNotFoundException("user not found"));
+
 //        if(userCheck==null){
 //            System.out.println("User not found");
 //            throw new UsernameNotFoundException("user not found");
 //        }
-        return null;
+        return new UserPrincipal(user);
     }
 }
