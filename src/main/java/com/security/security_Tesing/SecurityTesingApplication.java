@@ -11,3 +11,5 @@ public class SecurityTesingApplication {
 	}
 
 }
+//By default the authentication that we follow is userPassword authentication
+//UPAF is the userPassword authentication filter

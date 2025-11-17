@@ -3,6 +3,9 @@ package com.security.security_Tesing.Controller;
 import com.security.security_Tesing.Model.Users;
 import com.security.security_Tesing.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +19,25 @@ public class UserController {
     @Autowired
     private UserService userService;
     private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+
     @GetMapping("/getAllUser")
     public List<Users> getUsers(){
         return userService.getAllUserService();
     }
+
+
     @PostMapping("/register")
     public Users registerUser(@RequestBody Users user){
        user.setPassword(encoder.encode(user.getPassword()));
         return userService.register(user);
+    }
+
+
+    @PostMapping("/login")
+    public String login(@RequestBody Users user){
+        return userService.verify(user);
     }
 }
